@@ -1,28 +1,34 @@
 package com.cristinavegas.holaMundo.models;
 
+
 import jakarta.persistence.*;
 
 @Entity
+//esto cambia el nombre de la tabla
+//@Table(name="actores_de_series")
 public class Actor {
+
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    //añado el rol principal, Main, Guest, Cameo, Supporting
+    //esto lo que va a hacer es que me va a poner en la tabla los strings que he puesto en la clase role
+    //al actualizar la tabla sale la nueva columna y detecta el enum de la clase role
     @Enumerated(EnumType.STRING)
-    private Roles roles;
+    private Role role;
 
+    //@Column(name = "first_name") //este va a ser el nombre de la columna
     private String name;
 
-    private String residentCountry;
-
-    @OneToOne
-    Biography biography;
-
-    @ManyToOne
-    Agency agency;
+    private String residenceCountry;
 
     public Actor() {
+    }
+
+    public Actor(int id, String name, String residenceCountry) {
+        this.id = id;
+        this.name = name;
+        this.residenceCountry = residenceCountry;
     }
 
     public int getId() {
@@ -41,46 +47,29 @@ public class Actor {
         this.name = name;
     }
 
-    public String getResidentCountry() {
-        return residentCountry;
+    public String getResidenceCountry() {
+        return residenceCountry;
     }
 
-    public void setResidentCountry(String residentCountry) {
-        this.residentCountry = residentCountry;
+    public void setResidenceCountry(String residenceCountry) {
+        this.residenceCountry = residenceCountry;
     }
 
-    public Roles getRoles() {
-        return roles;
-    }
-    public void setRoles(Roles roles) {
-        this.roles = roles;
+    public Role getRole() {
+        return role;
     }
 
-    public Agency getAgency() {
-        return agency;
-    }
-
-    public void setAgency(Agency agency) {
-        this.agency = agency;
-    }
-
-    public Biography getBiography() {
-        return biography;
-    }
-
-    public void setBiography(Biography biography) {
-        this.biography = biography;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     @Override
     public String toString() {
         return "Actor{" +
-                "roles=" + roles +
-                ", id=" + id +
+                "id=" + id +
+                ", role=" + role +
                 ", name='" + name + '\'' +
-                ", residentCountry='" + residentCountry + '\'' +
-                ", biography=" + biography +
-                ", agency=" + agency.getName() +
+                ", residenceCountry='" + residenceCountry + '\'' +
                 '}';
     }
 }

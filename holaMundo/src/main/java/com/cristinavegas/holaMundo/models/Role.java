@@ -1,9 +1,8 @@
 package com.cristinavegas.holaMundo.models;
 
-
-public enum Roles {
+public enum Role {
     MAIN,
-    GUEST,
     SUPPORTING,
+    GUEST,
     CAMEO
 }
