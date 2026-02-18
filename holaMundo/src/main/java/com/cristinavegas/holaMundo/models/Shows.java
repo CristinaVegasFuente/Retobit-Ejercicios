@@ -1,14 +1,25 @@
 package com.cristinavegas.holaMundo.models;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
+//crea todos los getters
+@Getter
+//todos los setters
+@Setter
+//constructor sin argumentos
+@NoArgsConstructor
+//constructor con argumentos
+@AllArgsConstructor
 public class Shows {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,48 +32,6 @@ public class Shows {
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "shows")
     //usamos actor porque en la bbdd es actor
     private Set<Actor> actor = new HashSet<>();
-
-    //esto me permite escribir new show()
-    public Shows() {
-    }
-
-    public Shows(int id, String name, int year) {
-        this.id = id;
-        this.name = name;
-        this.year = year;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Set<Actor> getActor() {
-        return actor;
-    }
-
-    public void setActor(Set<Actor> actor) {
-        this.actor = actor;
-    }
 
     //creamos un metodo que nos devuelva una lista de nombres
     public List<String> getActorNames() {
