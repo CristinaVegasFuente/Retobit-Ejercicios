@@ -1,9 +1,12 @@
 package com.cristinavegas.holaMundo.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 public class Shows {
@@ -13,6 +16,11 @@ public class Shows {
 
     private String name;
     private int year;
+
+    //añadimos la propiedad para que sea bodireccional
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "shows")
+    //usamos actor porque en la bbdd es actor
+    private Set<Actor> actor = new HashSet<>();
 
     //esto me permite escribir new show()
     public Shows() {
@@ -48,12 +56,33 @@ public class Shows {
         this.id = id;
     }
 
+    public Set<Actor> getActor() {
+        return actor;
+    }
+
+    public void setActor(Set<Actor> actor) {
+        this.actor = actor;
+    }
+
+    //creamos un metodo que nos devuelva una lista de nombres
+    public List<String> getActorNames() {
+        return actor.stream() //con esto procesamos los datos del set de actores
+                //con esos datos hare un map, de cada uno de los actores y tiene que hacer un .getName
+                .map(eachActor -> eachActor.getName())
+                //colecciona todos los datos del map y los conviertes en una lista
+                .collect(Collectors.toList());
+    }
+
     @Override
     public String toString() {
         return "Shows{" +
-                "id=" + id +
-                "name='" + name + '\'' +
-                ", year=" + year +
+                "  \nid=" + id +
+                "  \name='" + name + '\'' +
+                ", \nyear=" + year +
+                //con el metodo anterior rellenamos el toString
+                ", \nactor=" + getActorNames() +
                 '}';
     }
+
+    //añadimos un ShowsRepository
 }
