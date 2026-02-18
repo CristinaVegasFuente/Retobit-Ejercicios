@@ -22,6 +22,10 @@ public class Actor {
 
     private String residenceCountry;
 
+    //Creamos la relacion con la biografia de cada actor
+    @OneToOne
+    Biography biography;
+
     public Actor() {
     }
 
@@ -63,6 +67,15 @@ public class Actor {
         this.role = role;
     }
 
+    //creamos el getter y setter para recibirlo por consola al ejecutar el metodo test de ReadActorBiography
+    public Biography getBiography() {
+        return biography;
+    }
+
+    public void setBiography(Biography biography) {
+        this.biography = biography;
+    }
+
     @Override
     public String toString() {
         return "Actor{" +
@@ -70,6 +83,7 @@ public class Actor {
                 ", role=" + role +
                 ", name='" + name + '\'' +
                 ", residenceCountry='" + residenceCountry + '\'' +
+                ", biography=" + biography +
                 '}';
     }
 }

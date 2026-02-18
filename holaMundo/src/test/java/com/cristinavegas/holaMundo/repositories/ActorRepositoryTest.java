@@ -226,7 +226,33 @@ public class ActorRepositoryTest {
     @Test
     @DisplayName("Buscar por nombre y por pais")
     public void findByNameContainingAndResidenceCountry(){
-        List<Actor> actorNameAndCountryContaining = actorRepository.findByNameContainingAndResidenceCountryContaining("man", "States");
+        List<Actor> actorNameAndCountryContaining =
+                actorRepository.findByNameContainingAndResidenceCountryContaining("man", "States");
         System.out.println("Resultado: " + actorNameAndCountryContaining);
+    }
+
+    /* Ejemplo de una relacion @OneToOne con Biography unidireccional, quiere decir que cuando consulto un actor
+    me sale con la biografia pero cuando consulto solo la biografia no me sale el actor */
+    @Test
+    @DisplayName("Leer datos de un actor y su biografia")
+    public void readActorBiography() {
+        //el cambio de variable a optional es para que puede que haya un actor o puede que no haya nada
+        Optional<Actor> optionalActor = actorRepository.findById(4);
+
+        //Aqui lo que hacemos es que si hay un actor con el id = 3 lo comprueba
+        if (optionalActor.isPresent()) {
+            Actor receivedActor = optionalActor.get();
+            /* aqui solo recibimos el actor, pero como queremos ver su biografia vamos a la Entity de Actor y
+            creamos el Getter y el Setter de biografia */
+            System.out.println("Recibimos: " + receivedActor.getBiography());
+            //con esto leemos el objeto: Recibimos: Biography{id=1, bio='Adam Scott es un actor, comediante, director y productor...'}
+            /* para que nos saliese toda la info del actor sin usar .getBiography() debemos completar el toString de
+            la entidad de Actor con biography */
+            System.out.println("Todo sobre el actor:" + receivedActor);
+
+            assertEquals("Adam Scott", receivedActor.getName());
+            assertEquals("United States", receivedActor.getResidenceCountry());
+        }
+        assertTrue(optionalActor.isPresent());
     }
 }
