@@ -26,6 +26,10 @@ public class Actor {
     @OneToOne
     Biography biography;
 
+    //añadimos la propiedad con su relacion
+    @ManyToOne
+    Agency agency;
+
     public Actor() {
     }
 
@@ -76,6 +80,16 @@ public class Actor {
         this.biography = biography;
     }
 
+    //añadimos Getters y Setters de Agency
+    public Agency getAgency() {
+        return agency;
+    }
+
+    public void setAgency(Agency agency) {
+        this.agency = agency;
+    }
+
+
     @Override
     public String toString() {
         return "Actor{" +
@@ -84,6 +98,11 @@ public class Actor {
                 ", name='" + name + '\'' +
                 ", residenceCountry='" + residenceCountry + '\'' +
                 ", biography=" + biography +
+                //añadimos el toString de Agency
+                /* para que no nos de un error de StackOverflowError, que basicamente es que este toString pide la
+                agencias y al mismo tiempo el toString de Agency pide el ListActor, lo solucionamos con .getName
+                para que nos de el nombre de la agencia del actor que estamos buscando*/
+                ", agency=" + agency.getName() +
                 '}';
     }
 }

@@ -255,4 +255,21 @@ public class ActorRepositoryTest {
         }
         assertTrue(optionalActor.isPresent());
     }
+
+    @Test
+    @DisplayName("Leer datos de un actor y su agencia")
+    public void readActorAgency() {
+        //el cambio de variable a optional es para que puede que haya un actor o puede que no haya nada
+        Optional<Actor> optionalActor = actorRepository.findById(4);
+
+        //Aqui lo que hacemos es que si hay un actor con el id = 4 lo comprueba
+        if (optionalActor.isPresent()) {
+            Actor receivedActor = optionalActor.get();
+            System.out.println("Todo sobre el actor:" + receivedActor);
+
+            assertEquals("Adam Scott", receivedActor.getName());
+            assertEquals("United States", receivedActor.getResidenceCountry());
+        }
+        assertTrue(optionalActor.isPresent());
+    }
 }
