@@ -29,7 +29,7 @@ public interface ActorRepository extends JpaRepository<Actor, Integer> {
 
     //JPQL metemos la query y al meter :country es algo que puede variar
     @Query("SELECT COUNT(a) FROM Actor a WHERE a.residenceCountry = :country")
-    //El metodo sabemos que va devolver un numero con lo cual ponemos int
+    //El metodo sabemos que va a devolver un numero con lo cual ponemos int
     //Dentro del parentesis ponemos country igual que en la Query
     int countByResidenceCountry(String country);
 

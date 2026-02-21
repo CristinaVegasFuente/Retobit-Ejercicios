@@ -1,5 +1,6 @@
 package com.cristinavegas.holaMundo.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -19,6 +20,8 @@ public class Agency {
     //con mappedBy lo que hacemos es que diga oye, en la otra entidad busca la propiedad llamada agency
     //fetch es para que intente hacer todos los procesos y no salga el error de lazy
     @OneToMany(mappedBy = "agency", fetch = FetchType.EAGER)
+    //esta anotacion: si hace referencia a algo que ya existe y la agencia hace referencia no lo incluye
+    @JsonBackReference
     private List<Actor> actorList = new ArrayList<>();
     //una vez hecho esto creamos la propiedad Agency agency; en la Entidad Actor
 

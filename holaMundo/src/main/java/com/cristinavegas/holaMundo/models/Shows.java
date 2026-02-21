@@ -1,5 +1,6 @@
 package com.cristinavegas.holaMundo.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,6 +31,7 @@ public class Shows {
 
     //añadimos la propiedad para que sea bodireccional
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "shows")
+    @JsonBackReference
     //usamos actor porque en la bbdd es actor
     private Set<Actor> actor = new HashSet<>();
 
