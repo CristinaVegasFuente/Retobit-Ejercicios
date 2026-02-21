@@ -26,19 +26,19 @@ public class Actor {
     //VALIDACIONES
     @NotNull //no quiero que el nombre sea null
     @NotEmpty //no quiero que este vacio
-    @Size(min = 3, max = 15) //indica que el nombre no puede tener menos de 3 letras ni más de 15
+    @Size(min = 3, max = 50) //indica que el nombre no puede tener menos de 3 letras ni más de 15
     private String name;
     //VALIDACIONES
     @NotNull //el residenceCountry tampoco sea null
     private String residenceCountry;
     //AHORA VUELVO AL CONTROLLER Y EN @POSTMAPPING METO @VALID
 
-    @Email //valida el formato de los emails con "@" y "."
-    private String email;
+    //@Email //valida el formato de los emails con "@" y "."
+    //private String email;
 
-    @Min(18)
+    //@Min(18)
     //si me envian un actor con una edad menor de 18 me indicara que no es posible incluirlo por la validacion
-    private int age;
+    //private int age;
     //del mismo modo con @Max(90)
 
     //Creamos la relacion con la biografia de cada actor

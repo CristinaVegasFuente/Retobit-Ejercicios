@@ -1,5 +1,6 @@
 package com.cristinavegas.holaMundo.controllers;
 
+import com.cristinavegas.holaMundo.dtos.ActorUpDateNameDTO;
 import com.cristinavegas.holaMundo.models.Actor;
 import com.cristinavegas.holaMundo.repositories.ActorRepository;
 import jakarta.validation.Valid;
@@ -36,7 +37,7 @@ public class ActorController {
      */
     @GetMapping("/test")
     @ResponseStatus(HttpStatus.OK)
-    public String healthCheck(){
+    public String healthCheck() {
         return "API funcionando correctamente";
     }
 
@@ -59,7 +60,7 @@ public class ActorController {
     @ResponseStatus(HttpStatus.OK)
     // @RequestParam permite recibir parámetros de la URL
     // required = false indica que el parámetro es opcional
-    public List<Actor> getAllActors(@RequestParam(required = false) String name){
+    public List<Actor> getAllActors(@RequestParam(required = false) String name) {
         //Si el cliente envía el parámetro "name" se realiza una búsqueda por coincidencia parcial del nombre
         if (name != null) {
             //usamos del repositorio el metodo findByNameContaining y le pasamos el nombre
@@ -77,14 +78,14 @@ public class ActorController {
      */
     @GetMapping("/{actorId}")
     @ResponseStatus(HttpStatus.OK)
-    public Actor getActorById(@PathVariable Integer actorId){
+    public Actor getActorById(@PathVariable Integer actorId) {
         //findById devuelve un Optional porque el registro puede no existir
         Optional<Actor> optionalActor = actorRepository.findById(actorId);
         //se comprueba si el actor está presente en la base de datos
-        if(optionalActor.isPresent()){
+        if (optionalActor.isPresent()) {
             //Si existe, se obtiene el objeto contenido en el Optional
             return optionalActor.get();
-        }else{
+        } else {
             //Si no existe, se lanza una excepción con estado 404 NOT FOUND
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Actor no encontrado");
         }
@@ -100,7 +101,7 @@ public class ActorController {
     // @RequestBody indica que los datos del actor se reciben en formato JSON
     // dentro del cuerpo de la petición y Spring los convierte automáticamente en un objeto Actor
     // @valid lo que hara es comprobar todas las validaciones que hemos puesto en la Entidad de Actor antes de crear un actor
-    public Actor createActor(@Valid @RequestBody Actor actor){
+    public Actor createActor(@Valid @RequestBody Actor actor) {
 
         // save() persiste el objeto en la base de datos
         // Si el ID es null, se inserta un nuevo registro
@@ -118,7 +119,7 @@ public class ActorController {
     // @RequestBody recibe el objeto Actor en formato JSON desde el cuerpo de la petición.
     // @PathVariable obtiene el ID del actor desde la URL
     // @valid lo que hara es comprobar todas las validaciones que hemos puesto en la Entidad de Actor antes de crear un actor
-    public Actor updateActor(@Valid @RequestBody Actor actor, @PathVariable Integer actorId){
+    public Actor updateActor(@Valid @RequestBody Actor actor, @PathVariable Integer actorId) {
 
         // Se busca el actor en la base de datos
         // Si no existe, se lanza automáticamente una excepción 404 NOT FOUND
@@ -145,7 +146,8 @@ public class ActorController {
     @ResponseStatus(HttpStatus.OK)
     // @RequestBody recibe el nuevo valor del campo a modificar en formato JSON.
     // @PathVariable obtiene el ID del actor desde la URL
-    public Actor patchActor(@RequestBody Actor actor, @PathVariable Integer actorId){
+    // ActorUpDateDTO en lugar de un Actor
+    public Actor patchActor(@Valid @RequestBody ActorUpDateNameDTO actor, @PathVariable Integer actorId) {
         // Se busca el actor en la base de datos.
         // Si no existe, se lanza una excepción con estado 404 NOT FOUND.
         Actor foundActor = actorRepository.findById(actorId)
@@ -157,5 +159,28 @@ public class ActorController {
 
         // Se guardan los cambios en la base de datos.
         return actorRepository.save(foundActor);
+    }
+
+    /**
+     * Endpoint que elimina un actor de la base de datos a partir de su ID.
+     * Se utiliza DELETE cuando se desea eliminar un recurso.
+     * Ejemplo:
+     * DELETE http://localhost:8080/api/actors/18
+     */
+    @DeleteMapping("/{actorId}")
+    //Devuelve 204 NO CONTENT para indicar que la operación fue exitosa pero no hay contenido en la respuesta
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    // @PathVariable obtiene el ID del actor desde la URL
+    // deleteById elimina el registro correspondiente en la base de datos
+    // No se devuelve ningún valor, por eso el método es void
+    public void deleteActor(@PathVariable Integer actorId) {
+        // Si el ID no existe, Spring Data JPA no lanza excepción automáticamente,
+        // pero se puede añadir lógica adicional para controlarlo si se desea
+
+        if (actorRepository.existsById(actorId)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Actor no encontrado");
+        }
+        //por lo tanto, no podemos poner return
+        actorRepository.deleteById(actorId);
     }
 }
