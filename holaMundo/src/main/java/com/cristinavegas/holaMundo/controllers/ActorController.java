@@ -2,6 +2,7 @@ package com.cristinavegas.holaMundo.controllers;
 
 import com.cristinavegas.holaMundo.models.Actor;
 import com.cristinavegas.holaMundo.repositories.ActorRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -96,9 +97,10 @@ public class ActorController {
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED) // Devuelve 201 CREATED cuando el recurso se crea correctamente
-    public Actor createActor(@RequestBody Actor actor){
-        // @RequestBody indica que los datos del actor se reciben en formato JSON
-        // dentro del cuerpo de la petición y Spring los convierte automáticamente en un objeto Actor
+    // @RequestBody indica que los datos del actor se reciben en formato JSON
+    // dentro del cuerpo de la petición y Spring los convierte automáticamente en un objeto Actor
+    // @valid lo que hara es comprobar todas las validaciones que hemos puesto en la Entidad de Actor antes de crear un actor
+    public Actor createActor(@Valid @RequestBody Actor actor){
 
         // save() persiste el objeto en la base de datos
         // Si el ID es null, se inserta un nuevo registro
@@ -115,7 +117,8 @@ public class ActorController {
     @ResponseStatus(HttpStatus.OK)
     // @RequestBody recibe el objeto Actor en formato JSON desde el cuerpo de la petición.
     // @PathVariable obtiene el ID del actor desde la URL
-    public Actor updateActor(@RequestBody Actor actor, @PathVariable Integer actorId){
+    // @valid lo que hara es comprobar todas las validaciones que hemos puesto en la Entidad de Actor antes de crear un actor
+    public Actor updateActor(@Valid @RequestBody Actor actor, @PathVariable Integer actorId){
 
         // Se busca el actor en la base de datos
         // Si no existe, se lanza automáticamente una excepción 404 NOT FOUND
